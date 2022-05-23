@@ -28,8 +28,8 @@ contract ProposalManager {
       IProposalModule(proposalModules[_proposalType].implementation).createProposal(data);
     }
 
-    // Aqui es mi duda, cada tipo de modulo tiene sus propias settings, por ejemplo las normal conviction voting tienen sus settings, las fluid van a tener sus settings
-    // como se podria hacer generico para q los parametros q reciba se manejen desde el modulo  sin el manager tener q hacer nada en especifico?
+    // Here is my doubt, how would you call to change the settings on the specific module without knowing the specific attributes that that specific module needs?
+    // Maybe this is a bad architecture decision from scratch?
     function changeModuleSettings(string calldata _proposalType, ...... data){
       IProposalModule(proposalModules[_proposalType].implementation).setSettings(data);
     }
