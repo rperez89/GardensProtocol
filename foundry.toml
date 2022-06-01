@@ -1,2 +1,4 @@
-[ci]
-fuzz-runs = 10_000
+[default]
+src = 'src'
+out = 'out'
+libs = ['lib']
