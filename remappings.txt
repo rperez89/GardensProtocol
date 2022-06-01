@@ -1,4 +1,7 @@
-ds-test/=lib/forge-std/lib/ds-test/src/
-openzeppelin-contracts/=lib/openzeppelin-contracts/
-zodiac/=lib/zodiac/contracts/
 forge-std/=lib/forge-std/src/
+openzeppelin-contracts/=lib/openzeppelin-contracts/
+ds-test/=lib/forge-std/lib/ds-test/src/
+openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/
+zodiac/=lib/zodiac/contracts/
+@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts
