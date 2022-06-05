@@ -10,14 +10,13 @@ contract ProposalManager {
         bool isFundRequestor;
     }
     struct Proposal {
-      uint256 id;
-      string typeName;
-      uint256 proposalModuleId; // The proposal id on the specific module
+        uint256 id;
+        string typeName;
+        uint256 proposalModuleId; // The proposal id on the specific module
     }
 
     mapping(string => ProposalModule) internal proposalModules;
-    mapping(uint256=> Proposal) internal proposals;
-
+    mapping(uint256 => Proposal) internal proposals;
 
     function addProposalModule(
         string calldata _name,
@@ -25,13 +24,14 @@ contract ProposalManager {
         bool _isFundRequestor
     ) external {
         proposalModules[_name] = ProposalModule(
+            _name,
             _implementation,
             _isFundRequestor
         );
     }
 
-    function addProposal(string calldata _proposalType, ...... data){
-      IProposalModule(proposalModules[_proposalType].implementation).createProposal(data);
+    function addProposal(string calldata _proposalType) external {
+        // IProposalModule(proposalModules[_proposalType].implementation)
+        //     .createProposal();
     }
-
 }
