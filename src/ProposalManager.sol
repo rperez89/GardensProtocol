@@ -10,13 +10,21 @@ contract ProposalManager {
         bool isFundRequestor;
     }
     struct Proposal {
-        uint256 id;
         string typeName;
         uint256 proposalModuleId; // The proposal id on the specific module
     }
 
+    uint256 proposalCounter;
+
     mapping(string => ProposalModule) internal proposalModules;
     mapping(uint256 => Proposal) internal proposals;
+
+    event ProposalAdded(
+        address indexed entity,
+        uint256 indexed id,
+        string proposalType,
+        uint256 indexed proposalModulesId
+    );
 
     function addProposalModule(
         string calldata _name,
@@ -30,8 +38,27 @@ contract ProposalManager {
         );
     }
 
-    function addProposal(string calldata _proposalType) external {
-        // IProposalModule(proposalModules[_proposalType].implementation)
-        //     .createProposal();
+    function addProposal(
+        string calldata _proposalType,
+        string calldata _title,
+        bytes calldata _link,
+        uint256 _requestedAmount,
+        address _beneficiary
+    ) external {
+        uint256 proposalModuleId = IProposalModule(
+            proposalModules[_proposalType].implementation
+        ).addProposal(_title, _link, _requestedAmount, _beneficiary);
+
+        proposals[proposalCounter++] = Proposal(
+            _proposalType,
+            proposalModuleId
+        );
+
+        emit ProposalAdded(
+            msg.sender,
+            proposalCounter,
+            _proposalType,
+            proposalModuleId
+        );
     }
 }

@@ -14,8 +14,8 @@ interface IProposalModule {
         uint256 requestedAmount;
         uint256 stakedTokens;
         ProposalStatus proposalStatus;
-        mapping(address => uint256) userStake;
-        uint256 parametersCounter;
+        // mapping(address => uint256) userStake;
+        // uint256 parametersCounter;
     }
 
     // struct additionalProposalParameters {
@@ -31,7 +31,7 @@ interface IProposalModule {
 
     // mapping(uint256 => Proposal) internal proposals;
 
-    function createProposal(
+    function addProposal(
         string calldata _title,
         bytes calldata _link,
         uint256 _requestedAmount,

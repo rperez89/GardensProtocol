@@ -5,8 +5,9 @@ import {Module} from "zodiac/core/Module.sol";
 import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import {SafeERC20} from "openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IAvatar} from "zodiac/interfaces/IAvatar.sol";
+import {IProposalModule} from "./interfaces/IProposalModule.sol";
 
-contract UniqueFundingProposal is Module {
+contract UniqueFundingProposal is Module, IProposalModule {
     using SafeERC20 for ERC20;
 
     ERC20 public stakeToken;
@@ -15,6 +16,21 @@ contract UniqueFundingProposal is Module {
     uint256 public maxRatio;
     uint256 public weight;
     uint256 public minThresholdStakePercentage;
+
+    uint256 public proposalCounter;
+
+    mapping(uint256 => Proposal) internal proposals;
+    mapping(address => Proposal) proposalUserStake;
+    mapping(address => mapping(uint256 => uint256)) userProposalStake;
+
+    event ProposalAdded(
+        address indexed entity,
+        uint256 indexed id,
+        string title,
+        bytes link,
+        uint256 amount,
+        address beneficiary
+    );
 
     constructor(
         address _owner,
@@ -61,5 +77,30 @@ contract UniqueFundingProposal is Module {
         weight = _weight;
         minThresholdStakePercentage = _minThresholdStakePercentage;
         transferOwnership(_owner);
+    }
+
+    function addProposal(
+        string calldata _title,
+        bytes calldata _link,
+        uint256 _requestedAmount,
+        address _beneficiary
+    ) public returns (uint256) {
+        proposals[proposalCounter++] = Proposal(
+            msg.sender,
+            _beneficiary,
+            _requestedAmount,
+            0,
+            ProposalStatus.Active
+        );
+
+        emit ProposalAdded(
+            msg.sender,
+            proposalCounter,
+            _title,
+            _link,
+            _requestedAmount,
+            _beneficiary
+        );
+        return proposalCounter;
     }
 }
