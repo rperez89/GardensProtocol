@@ -8,29 +8,6 @@ interface IProposalModule {
         Executed // A vote that has been executed
     }
 
-    struct Proposal {
-        address submitter;
-        address beneficiary;
-        uint256 requestedAmount;
-        uint256 stakedTokens;
-        ProposalStatus proposalStatus;
-        // mapping(address => uint256) userStake;
-        // uint256 parametersCounter;
-    }
-
-    // struct additionalProposalParameters {
-    //     string name;
-    //     uint256 intParm;
-    //     address addressParm;
-    //     bool booleanParm;
-    //     string stringParm;
-    //     bytes bytesParm;
-    // }
-
-    // mapping(uint256 => additionalProposalParameters) proposalParameters;
-
-    // mapping(uint256 => Proposal) internal proposals;
-
     function addProposal(
         string calldata _title,
         bytes calldata _link,
@@ -48,18 +25,6 @@ interface IProposalModule {
     function executeProposal(uint256 _proposalId) external;
 
     function cancelProposal(uint256 _proposalId) external;
-
-    function getProposal(uint256 _proposalId)
-        external
-        view
-        returns (
-            address submitter,
-            address beneficiary,
-            uint256 requestedAmount,
-            uint256 stakedTokens,
-            ProposalStatus proposalStatus,
-            uint256 parametersCounter
-        );
 
     function getProposalUserStake(uint256 _proposalId, address _voter)
         external

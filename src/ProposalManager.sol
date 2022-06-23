@@ -4,19 +4,19 @@ pragma solidity ^0.8.13;
 import {IProposalModule} from "./interfaces/IProposalModule.sol";
 
 contract ProposalManager {
-    struct ProposalModule {
+    struct ProposalStrategy {
         string name;
         address implementation;
         bool isFundRequestor;
     }
     struct Proposal {
         string typeName;
-        uint256 proposalModuleId; // The proposal id on the specific module
+        uint256 proposalStrategyId; // The proposal id on the specific module
     }
 
     uint256 proposalCounter;
 
-    mapping(string => ProposalModule) internal proposalModules;
+    mapping(string => ProposalStrategy) internal proposalStrategies;
     mapping(uint256 => Proposal) internal proposals;
 
     event ProposalAdded(
@@ -31,7 +31,7 @@ contract ProposalManager {
         address _implementation,
         bool _isFundRequestor
     ) external {
-        proposalModules[_name] = ProposalModule(
+        proposalStrategies[_name] = ProposalStrategy(
             _name,
             _implementation,
             _isFundRequestor
@@ -46,7 +46,7 @@ contract ProposalManager {
         address _beneficiary
     ) external {
         uint256 proposalModuleId = IProposalModule(
-            proposalModules[_proposalType].implementation
+            proposalStrategies[_proposalType].implementation
         ).addProposal(_title, _link, _requestedAmount, _beneficiary);
 
         proposals[proposalCounter++] = Proposal(
@@ -60,5 +60,21 @@ contract ProposalManager {
             _proposalType,
             proposalModuleId
         );
+    }
+
+    function getProposalStrategy(string calldata _name)
+        external
+        view
+        returns (address)
+    {
+        return proposalStrategies[_name].implementation;
+    }
+
+    function getProposalStrategyId(uint256 _id)
+        external
+        view
+        returns (uint256)
+    {
+        return proposals[_id].proposalStrategyId;
     }
 }
